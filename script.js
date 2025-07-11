@@ -60,22 +60,18 @@ document.getElementById('save').onclick = () => {
   link.click();
 };
 
-document.getElementById('send').onclick = async () => {
-  canvas.toBlob(async (blob) => {
-    const zip = new JSZip();
-    zip.file("signature.png", blob);
-
-    const zipBlob = await zip.generateAsync({ type: "blob" });
-    const file = new File([zipBlob], "signature.zip", { type: "application/zip" });
+document.getElementById('send').onclick = () => {
+  canvas.toBlob(blob => {
+    const file = new File([blob], "signature.png", { type: "image/png" });
 
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
       navigator.share({
         files: [file],
         title: "Моя подпись",
-        text: "Отправляю архив с подписью"
+        text: "Отправляю изображение подписи"
       });
     } else {
-      alert("Ваш браузер не поддерживает отправку ZIP через Share API.");
+      alert("Ваш браузер не поддерживает отправку файлов через Share API.");
     }
   });
 };
